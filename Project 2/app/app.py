@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import joblib 
+import joblib as joblib
 
 # Load the trained model
 model = joblib.load(r"C:\Users\snyad\jupiter\house_price_model.pkl")
