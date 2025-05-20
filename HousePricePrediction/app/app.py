@@ -1,10 +1,15 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import joblib as joblib
+import joblib
+from sqlalchemy import create_engine
+import pymysql
+
 
 # Load the trained model
-model = joblib.load(r"C:\Users\snyad\jupiter\house_price_model.pkl")
+model = joblib.load(r"C:\Users\snyad\project\HousePricePrediction\models\house_price_model.pkl")
+# Connect to MySQL database (update with your password)
+engine = create_engine("mysql+pymysql://root:8005130826@localhost/house_price")
 
 st.set_page_config(page_title="House Price Prediction", layout="centered")
 st.title("🏠 House Price Predictor")
@@ -32,3 +37,8 @@ input_data = pd.DataFrame({
 if st.button("Predict"):
     prediction = model.predict(input_data)[0]
     st.success(f"💰 Estimated House Price: ₹{int(prediction):,}")
+    
+    # ✅ Save prediction to MySQL
+    input_data['predicted_price'] = prediction
+    input_data.to_sql('prediction_log', con=engine, if_exists='append', index=False)
+    st.info("✅ Prediction logged to MySQL database.")
