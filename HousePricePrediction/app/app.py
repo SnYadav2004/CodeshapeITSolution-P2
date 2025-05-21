@@ -33,3 +33,12 @@ input_df = pd.DataFrame({
 if st.button("Predict"):
     prediction = model.predict(input_df)[0]
     st.success(f"💰 Estimated House Price: ₹{int(prediction):,}")
+
+import traceback
+
+try:
+    # your full Streamlit code here
+    st.write("✅ App loaded successfully")
+except Exception as e:
+    st.error("❌ Error occurred:")
+    st.code(traceback.format_exc())
